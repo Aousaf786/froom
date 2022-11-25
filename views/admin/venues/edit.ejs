@@ -1,0 +1,171 @@
+<%- include('../partials/head')  %>
+
+</head>
+
+    <%- include('../partials/header') %>
+
+    <!--**********************************
+    Inner Content body start
+    ***********************************-->
+
+    <h1 class="h3 mb-3"><%- sectionTitle %></h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title float-start">Venue Detail</h5>
+                </div>
+                <div class="card-body">
+                    <form id="editForm">
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputTitle">Title</label>
+                                <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Title" value="<%- recordDetail.title %>" required>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputType">Type</label>
+                                <input type="text" class="form-control" id="inputType" name="type_of_event_room" placeholder="Type" value="<%- recordDetail.type_of_event_room %>" required>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputStatus">Status</label>
+                                <select id="inputStatus" class="form-control" name="status">
+                                    <option value="1" <%- (recordDetail.status == "1")? "selected":"" %>>Active</option>
+                                    <option value="0" <%- (recordDetail.status == "0")? "selected":"" %>>Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="inputDescription">Description</label>
+                                <textarea class="form-control" id="inputDescription" name="description" placeholder="Description"><%- recordDetail.description %></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputMinPeopleLimit">Minimum People</label>
+                                <input type="number" class="form-control" id="inputMinPeopleLimit" name="min_people_limit" placeholder="Minimum People" value="<%- recordDetail.min_people_limit %>">
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputMaxPeopleLimit">Maximum People</label>
+                                <input type="number" class="form-control" id="inputMaxPeopleLimit" name="max_people_limit" placeholder="Maximum People" value="<%- recordDetail.max_people_limit %>">
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputPerPersonCost">Cost (Per Day)</label>
+                                <input type="number" class="form-control" id="inputPerPersonCost" name="price" placeholder="Cost" value="<%- recordDetail.price %>">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" name="publicly_show" value="1" <%- (recordDetail.publicly_show == "1")? "checked":"" %> id="publiclyShowCheckbox">
+                                    <label class="form-check-label" for="publiclyShowCheckbox">Show Publicly</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Additional Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-0 text-center mb-3">
+                        <div class="col-md-12">
+                            <%
+                                let filePath = "/admin-assets/images/no-image.jpg";
+                                if(recordDetail.image){
+                                    filePath = "/storage/venues/"+recordDetail.image;
+                                }
+                            %>
+                            <a href="<%- filePath %>" target="_blank">
+                                <img src="<%- filePath %>" class="img-fluid rounded-circle" style="height: 100px;" alt="<%- recordDetail.title %>">
+                            </a>
+                        </div>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td class="fw-bold">User:</td>
+                            <td class="text-break"><a href="/admin/users/edit-user/<%= recordDetail.user_id._id %>" target="_blank"><%= recordDetail.user_id.first_name %> <%= recordDetail.user_id.last_name %></a></td>
+                        </tr>
+                        <tr> 
+                            <td class="fw-bold">Address:</td>
+                            <td class="text-break"><%- recordDetail.address %></td>
+                        </tr>
+						<tr>
+                            <td class="fw-bold">Created Date:</td>
+                            <td class="text-break"><%= moment(recordDetail.createdAt).format(DATE_FORMAT) %></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Amenities:</td>
+                            <td class="text-break">
+                                <% recordDetail.amenities.forEach(function(item){ %>
+                                    <%= item %>, <br>
+                                <% }) %>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Gallery</h5>
+        </div>
+        <div class="card-body">
+            <% 
+                recordDetail.gallery_images.forEach(function (item) {
+                    let galImg = "/storage/venues/"+item;
+            %>
+                    <a href="<%- galImg %>" target="_blank">
+                        <img class="rounded me-4 mb-2" src="<%- galImg %>" alt="Placeholder">
+                    </a>
+            <% }) %>
+        </div>
+    </div>
+
+    <!--**********************************
+    Inner Content body end
+    ***********************************-->
+
+    <%- include('../partials/footer') %>
+
+    <!-- Scripts -->
+    <%- include('../partials/defaultJs') %>
+
+    <script>
+
+        $(document).ready(function () {
+
+            // datepicker
+            flatpickr(".datePicker", {maxDate: "today"});
+
+            // update form submit
+            $("#editForm").submit(function (e) {
+                e.preventDefault();
+                let data = $(this).serialize()+"&venue_id=<%- recordDetail._id %>";
+                axios.put('/admin/venues/update-venue', data)
+                    .then(function (response) {
+                        if(response.data.code == 1){
+                            successMsg(response.data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            errorMsg(response.data.message);
+                        }
+                    })
+                    .catch(function (error) {
+
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

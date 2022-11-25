@@ -1,0 +1,133 @@
+<%- include('../partials/head')  %>
+
+</head>
+
+<!--
+  HOW TO USE:
+  data-theme: default (default), dark, light, colored
+  data-layout: fluid (default), boxed
+  data-sidebar-position: left (default), right
+  data-sidebar-layout: default (default), compact
+-->
+<body data-theme="dark" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
+
+    <main class="d-flex w-100 h-100">
+        <div class="container d-flex flex-column">
+            <div class="row vh-100">
+                <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+                    <div class="d-table-cell align-middle">
+
+                        <div class="text-center mt-4">
+                            <h1 class="h2">Welcome back</h1>
+                            <p class="lead">
+                                Sign in to your account to continue
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="m-sm-4">
+                                    <form id="loginForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" required/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Password</label>
+                                            <input class="form-control form-control-lg" type="password" name="password" placeholder="Enter your password" required/>
+                                        </div>
+                                        <div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Remember me next time</label>
+                                            </div>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button type="submit" class="btn btn-lg btn-primary">Sign in</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/defaultJs') %>
+
+    <script>
+        $(document).ready(function () {
+            // remember me check from browser cookies
+            checkRememberTrue();
+
+            // login form submit
+            $("#loginForm").submit(function (e) {
+                e.preventDefault();
+                if($("#flexSwitchCheckChecked").prop("checked") == true){
+                    createCookie("rememmberMeUserEmail",$("[name=email]").val(),7);
+                    createCookie("rememmberMeUserPassword",btoa($("[name=password]").val()),7);
+                } else {
+                    eraseCookie('rememmberMeUserEmail');
+                    eraseCookie('rememmberMeUserPassword');
+                }
+                let data = $(this).serialize();
+                axios.post('/admin/login', data)
+                    .then(function (response) {
+                        if(response.data.code == 1){
+                            successMsg(response.data.message);
+                            setTimeout(function () {
+                                location.href = "/admin";
+                            }, 1000);
+                        } else {
+                            errorMsg(response.data.message);
+                        }
+                    })
+                    .catch(function (error) {
+
+                    });
+            });
+        });
+
+        // check cookies
+        function checkRememberTrue(){
+            if($.trim(readCookie("rememmberMeUserEmail")) != 'null' && $.trim(readCookie("rememmberMeUserEmail")) != '' && $.trim(readCookie("rememmberMeUserPassword")) != 'null' && $.trim(readCookie("rememmberMeUserPassword")) != '' ){
+                $("[name=email]").val(readCookie("rememmberMeUserEmail"));
+                $("[name=password]").val(atob(readCookie("rememmberMeUserPassword")));
+                $('#flexSwitchCheckChecked').attr('checked','checked');
+            }
+        }
+
+        // create cookies
+        function createCookie(name,value,days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name+"="+value+expires+"; path=/";
+        }
+
+        // read cookies
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        // delete cookies
+        function eraseCookie(name) {
+            createCookie(name,"",-1);
+        }
+    </script>
+</body>
+
+</html>

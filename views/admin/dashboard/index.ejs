@@ -1,0 +1,122 @@
+<%- include('../partials/head')  %>
+
+</head>
+
+    <%- include('../partials/header') %>
+
+    <!--**********************************
+    Inner Content body start
+    ***********************************-->
+
+    <h1 class="h3 mb-3"><%- sectionTitle %></h1>
+    <div class="row">
+        <div class="col-12 d-flex">
+            <div class="w-100">
+                <h3>Welcome <%- adminSession.name %></h3>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col mt-0">
+                            <h5 class="card-title">Admin</h5>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="stat text-primary">
+                                <i data-feather="user-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 class="mt-1 mb-3"><%= adminCount %></h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col mt-0">
+                            <h5 class="card-title">Guests</h5>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="stat text-primary">
+                                <i data-feather="users"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 class="mt-1 mb-3"><%= guestCount %></h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col mt-0">
+                            <h5 class="card-title">Hosts</h5>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="stat text-primary">
+                                <i data-feather="user-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 class="mt-1 mb-3"><%= hostCount %></h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col mt-0">
+                            <h5 class="card-title">Pending Venues</h5>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="stat text-primary">
+                                <i data-feather="cloud-off"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 class="mt-1 mb-3"><%= pendingVenueCount %></h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col mt-0">
+                            <h5 class="card-title">Approved Venues</h5>
+                        </div>
+
+                        <div class="col-auto">
+                            <div class="stat text-primary">
+                                <i data-feather="home"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h1 class="mt-1 mb-3"><%= approvedVenueCount %></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+    Inner Content body end
+    ***********************************-->
+
+    <%- include('../partials/footer') %>
+
+    <!-- Scripts -->
+    <%- include('../partials/defaultJs') %>
+
+</body>
+</html>

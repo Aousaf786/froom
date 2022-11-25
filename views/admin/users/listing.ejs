@@ -1,0 +1,90 @@
+<%- include('../partials/head')  %>
+
+</head>
+
+    <%- include('../partials/header') %>
+
+    <!--**********************************
+    Inner Content body start
+    ***********************************-->
+
+    <h1 class="h3 mb-3"><%- sectionTitle %> User Listing</h1>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title float-start"><%- sectionTitle %> Users</h5>
+                </div>
+                <div class="card-body overflow-auto">
+                    <table id="datatable" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Sr</th>
+                                <th>User ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i < records.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= i+1 %>
+                                    </td>
+                                    <td>
+                                        <%= records[i]._id %>
+                                    </td>
+                                    <td>
+                                        <%= records[i].first_name %> <%= records[i].last_name %>
+                                    </td>
+                                    <td>
+                                        <%= records[i].email %>
+                                    </td>
+                                    <td>
+                                        <%- (records[i].status == 1)? '<span class="badge bg-success">Active</span>': '<span class="badge bg-warning">Inactive</span>' %>
+                                    </td>
+                                    <td>
+                                        <%= moment(records[i].createdAt).format(DATE_FORMAT) %>
+                                    </td>
+                                    <td>
+                                        <%
+                                            let editUrl = "/admin/users/edit-user/" + records[i]._id;
+                                            if (adminSession._id == records[i]._id) {
+                                                editUrl = "/admin/edit-profile";
+                                            }
+                                        %>
+                                        <a href="<%= editUrl %>" class="btn btn-primary">Edit</a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+    Inner Content body end
+    ***********************************-->
+
+    <%- include('../partials/footer') %>
+
+    <!-- Scripts -->
+    <%- include('../partials/defaultJs') %>
+    <!-- Datatable -->
+    <script src="/admin-assets/js/datatables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#datatable').DataTable();
+
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<%- include('../partials/head')  %>
+
+<style>
+    #channel-list{max-height: 930px;overflow-y: auto;}
+    .chat-messages{overflow-y: auto;}
+    .active_chat{background-color: #384350;color: #bdc0c5;}
+</style>
+
+</head>
+
+    <%- include('../partials/header') %>
+
+    <!--**********************************
+    Inner Content body start
+    ***********************************-->
+
+    <h1 class="h3 mb-3"><%- sectionTitle %></h1>
+    <div class="card">
+        <div class="row g-0">
+            <div class="col-12 col-lg-5 col-xl-4 border-end list-group" id="channel-list">
+                <h3 class="p-3">Loading..</h3>
+            </div>
+            <div class="col-12 col-lg-7 col-xl-8">
+                <div class="py-2 px-4 border-bottom"  id="userNameChatHead" style="display: none;">
+                    <div class="d-flex align-items-center py-1">
+                        <div class="position-relative">
+                            <img src="/admin-assets/images/proImg.png" class="rounded-circle me-1" alt="Sharon Lessman" width="40" height="40">
+                        </div>
+                        <div class="flex-grow-1 ps-3">
+                            <strong id="userName"></strong>
+                            <div class="text-muted small"><em id="typing-placeholder"></em></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="position-relative">
+                    <div class="chat-messages p-4" id="message-list">
+
+                        <h2>Currently you have not selected any conversation.</h2>
+
+                    </div>
+                </div>
+
+                <div class="flex-grow-0 py-3 px-4 border-top">
+                    <div class="input-group" id="typing-row" style="display: none;">
+                        <input type="text" class="form-control" placeholder="Type your message" id="input-text">
+                        <button class="btn btn-primary" id="sendMsgBtn">Send</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+    Inner Content body end
+    ***********************************-->
+
+    <%- include('../partials/footer') %>
+
+    <!-- Scripts -->
+    <%- include('../partials/defaultJs') %>
+    <script src="https://media.twiliocdn.com/sdk/js/conversations/releases/2.1.0/twilio-conversations.min.js" integrity="sha256-v2SFLWujVq0wnwHpcxct7bzTP8wII7sumEhAKMEqgHQ=" crossorigin="anonymous"></script>
+    <script src="/admin-assets/js/moment.min.js"></script>
+    <script src="/admin-assets/twilio-assets/jquery-throttle.min.js"></script>
+    <script src="/admin-assets/twilio-assets/twiliochat.js"></script>
+
+</body>
+</html>

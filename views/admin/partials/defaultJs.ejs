@@ -1,0 +1,125 @@
+<script src="/admin-assets/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+<script src="/admin-assets/js/axios.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $("body").on("click", ".deletedBtn", function (e) {
+        e.preventDefault();
+        let url = $(this).attr("href");
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will not be able to recover this!",
+            icon: "warning",
+            confirmButtonColor: '#e72e2e',
+            confirmButtonText: 'Yes, Do it!',
+            showCancelButton: true,
+        })
+            .then((willDelete) => {
+                if (willDelete.isConfirmed) {
+                    axios.delete(url)
+                        .then(function (response) {
+                            if(response.data.code == 1){
+                                successMsg(response.data.message);
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            } else {
+                                errorMsg(response.data.message);
+                            }
+                        })
+                        .catch(function (error) {
+
+                        });
+                }
+            });
+    });
+
+    // image preview
+    $('.previewInput').change( function(event) {
+        var targetView = $(this).data("target");
+        var files = event.target.files[0];
+        var fileName = files.name;
+        var fsize = files.size;
+        var tmppath = URL.createObjectURL(files);
+        var ext = fileName.split('.').pop().toLowerCase();
+        switch(ext){
+            case 'jpg': case 'jpeg': case 'png':
+                break;
+            default:
+                errorMsg('Only jpg and png image is allow');
+                $(this).val("");
+                return false
+        }
+        if(fsize>1048576){
+            errorMsg('Maximum file size limit is 1mb');
+            $(this).val("");
+            return false
+        }
+        $(targetView).attr('src',tmppath);
+    });
+
+});
+
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    showLoader();
+    return config;
+}, function (error) {
+    // Do something with request error
+    hideLoader();
+    errorMsg("Something error");
+    return Promise.reject(error);
+});
+
+// Add a response interceptor
+axios.interceptors.response.use(function (response) {
+    // Do something with response data
+    hideLoader();
+    return response;
+}, function (error) {
+    // Do something with response error
+    hideLoader();
+    if(error.response.status == 422){
+        $.each(error.response.data.errors, function (index, value) {
+            errorMsg(value);
+        });
+    } else if(error.response.status == 401 || error.response.status == 403){
+        errorMsg(error.response.data.message);
+    } else {
+        errorMsg("Something went wrong");
+    }
+    return Promise.reject(error);
+});
+
+function showLoader(){
+    Swal.fire({
+        title: 'Loading...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        },
+    })
+}
+
+function hideLoader(){
+    Swal.close();
+}
+
+function successMsg(msg){
+    Swal.fire({
+        icon: 'success',
+        text: msg,
+    })
+}
+
+function errorMsg(msg){
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: msg,
+    })
+}
+</script>

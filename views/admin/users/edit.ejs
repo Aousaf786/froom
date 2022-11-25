@@ -1,0 +1,219 @@
+<%- include('../partials/head')  %>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/css/intlTelInput.css" />
+<style>
+    .iti{width: 100%;}
+    .iti__country-list{color: #000000;}
+</style>
+
+</head>
+
+    <%- include('../partials/header') %>
+
+    <!--**********************************
+    Inner Content body start
+    ***********************************-->
+
+    <h1 class="h3 mb-3"><%- sectionTitle %></h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title float-start">User Detail</h5>
+                </div>
+                <div class="card-body">
+                    <form id="editProfileForm">
+                        <div class="row">
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputFName">First Name</label>
+                                <input type="text" class="form-control" id="inputFName" name="first_name" placeholder="First Name" value="<%- userDetail.first_name %>" required>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputLName">Last Name</label>
+                                <input type="text" class="form-control" id="inputLName" name="last_name" placeholder="Last Name" value="<%- userDetail.last_name %>" required>
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputStatus">Account Status</label>
+                                <select id="inputStatus" class="form-control" name="status">
+                                    <option value="1" <%- (userDetail.status == "1")? "selected":"" %>>Active</option>
+                                    <option value="0" <%- (userDetail.status == "0")? "selected":"" %>>Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="inputEmail">Email</label>
+                                <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<%- userDetail.email %>" required>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="inputPhone">Phone Number</label>
+                                <input type="text" class="form-control" id="inputPhone" name="phone_number" placeholder="Phone Number" value="<%- userDetail.phone_number %>">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="inputPassword">Password (leave empty not to change)</label>
+                                <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" >
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label" for="inputDob">DOB</label>
+                                <input type="text" class="form-control datePicker" id="inputDob" name="dob" placeholder="DOB" value="<%- userDetail.dob %>">
+                            </div>
+                            <div class="mb-3 col-md-3">
+                                <label class="form-label" for="inputGender">Gender</label>
+                                <select id="inputGender" class="form-control" name="gender">
+                                    <option value="Male" <%- (userDetail.gender == "Male")? "selected":"" %>>Male</option>
+                                    <option value="Female" <%- (userDetail.gender == "Female")? "selected":"" %>>Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="inputCountry">Country</label>
+                                <select id="inputCountry" class="form-control" name="country">
+                                    <option value="">Please select</option>
+                                    <% for(var i=0; i < countryList.length; i++){ %>
+                                        <option value="<%- countryList[i] %>" <%- (userDetail.country == countryList[i])? "selected":"" %>><%- countryList[i] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="inputCity">City</label>
+                                <input type="text" class="form-control" id="inputCity" name="city" placeholder="City" value="<%- userDetail.city %>">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-8">
+                                <label class="form-label" for="inputAddress">Address</label>
+                                <input type="text" class="form-control" id="inputAddress" name="address" placeholder="Address" value="<%- userDetail.address %>">
+                            </div>
+                            <div class="mb-3 col-md-4">
+                                <label class="form-label" for="inputZipcode">Zip Code</label>
+                                <input type="text" class="form-control" id="inputZipcode" name="zip_code" placeholder="Zip Code" value="<%- userDetail.zip_code %>">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label" for="inputAboutMe">About Me</label>
+                                <textarea class="form-control" id="inputAboutMe" name="about_me" placeholder="About Me"><%- userDetail.about_me %></textarea>
+                            </div>
+                        </div>
+                        <% if(adminSession._id != userDetail._id){ %>
+                            <div class="row">
+                                <div class="mb-3 col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="admin_access" value="1" <%- (userDetail.admin_access == "1")? "checked":"" %> id="adminAccessCheckbox">
+                                        <label class="form-check-label" for="adminAccessCheckbox">Admin Panel Access</label>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Additional Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-0 text-center mb-3">
+                        <div class="col-md-12">
+                            <%
+                                let filePath = "/admin-assets/images/no-image.jpg";
+                                if(userDetail.pro_img){
+                                    filePath = "/storage/users/"+userDetail.pro_img;
+                                }
+                            %>
+                            <img src="<%- filePath %>" class="img-fluid rounded-circle" style="height: 100px;" alt="<%- userDetail.name %>">
+                        </div>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td class="fw-bold">User ID:</td>
+                            <td class="text-break"><%- userDetail._id %></td>
+                        </tr>
+                        <% if(userDetail.host_access == 1){ %>
+                            <tr>
+                                <td class="fw-bold">Host Title:</td>
+                                <td class="text-break"><%- userDetail.host_title %></td>
+                            </tr>
+                        <% } %>
+                        <tr> 
+                            <td class="fw-bold">Admin Panel Access:</td>
+                            <td class="text-break"><%- (userDetail.admin_access == 1)? '<span class="badge bg-success">Yes</span>': '<span class="badge bg-warning">No</span>' %></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Guest Access (App):</td>
+                            <td class="text-break"><%- (userDetail.guest_access == 1)? '<span class="badge bg-success">Yes</span>': '<span class="badge bg-warning">No</span>' %></td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Host Access (App):</td>
+                            <td class="text-break"><%- (userDetail.host_access == 1)? '<span class="badge bg-success">Yes</span>': '<span class="badge bg-warning">No</span>' %></td>
+                        </tr>
+						<tr>
+                            <td class="fw-bold">Registration Date:</td>
+                            <td class="text-break"><%= moment(userDetail.createdAt).format(DATE_FORMAT) %></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+    Inner Content body end
+    ***********************************-->
+
+    <%- include('../partials/footer') %>
+
+    <!-- Scripts -->
+    <%- include('../partials/defaultJs') %>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/js/intlTelInput.min.js"></script>
+
+    <script>
+
+        // initialize the phone number formatter
+        const phoneInputField = document.querySelector("#inputPhone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            //formatOnDisplay: false,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.16/js/utils.js",
+        });
+
+        $(document).ready(function () {
+
+            // datepicker
+            flatpickr(".datePicker", {maxDate: "today"});
+
+            // update profile form submit
+            $("#editProfileForm").submit(function (e) {
+                e.preventDefault();
+                if($("#inputPhone").val() != "" && !phoneInput.isValidNumber()){
+                    errorMsg("Please enter phone number with correct country code");
+                    return false;
+                }
+                $("#inputPhone").val(phoneInput.getNumber());
+                let data = $(this).serialize()+"&user_id=<%- userDetail._id %>";
+                axios.put('/admin/users/update-user', data)
+                    .then(function (response) {
+                        if(response.data.code == 1){
+                            successMsg(response.data.message);
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            errorMsg(response.data.message);
+                        }
+                    })
+                    .catch(function (error) {
+
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

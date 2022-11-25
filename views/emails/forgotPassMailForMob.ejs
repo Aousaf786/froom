@@ -1,0 +1,30 @@
+<%- include('partials/header') %>
+
+    <tr>
+        <td class="email-body" width="100%">
+            <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td  class="email-body_cell">
+                        <h1 class="header-1">Reset Password</h1>
+                        <p class="paragraph">
+                            <b>Name:</b> <%= userName %>
+                        </p>
+                        <p class="paragraph">
+                            Thank you for password recovered query, please enter below code in the app for reset the password.
+                        </p>
+
+                        <!-- Action Button -->
+                        <table class="body_action" align="center" width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td align="center">
+                                    <%= token %>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+<%- include('partials/footer') %>

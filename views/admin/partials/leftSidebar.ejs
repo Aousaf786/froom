@@ -1,0 +1,58 @@
+<%
+	// isset if variable not defined
+	if(typeof sidebarActive == 'undefined'){
+		sidebarActive = "";
+	}
+
+	if(typeof childSidebarActive == 'undefined'){
+		childSidebarActive = "";
+	}
+%>
+
+    <!--**********************************
+        Sidebar start
+    ***********************************-->
+    <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+            <a class="sidebar-brand" href="/">
+                <span class="align-middle">Froom</span>
+            </a>
+    
+            <ul class="sidebar-nav">
+                <li class="sidebar-item <%- (sidebarActive == 'Dashboard')? 'active': '' %>">
+                    <a class="sidebar-link" href="/admin/dashboard">
+                        <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item <%- (sidebarActive == 'Users')? 'active': '' %>">
+                    <a data-bs-target="#users" data-bs-toggle="collapse" class="sidebar-link <%- (sidebarActive == 'Users')? '': 'collapsed' %>">
+                        <i class="align-middle" data-feather="users"></i> <span class="align-middle">Users</span>
+                    </a>
+                    <ul id="users" class="sidebar-dropdown list-unstyled collapse <%- (sidebarActive == 'Users')? 'show': '' %>" data-bs-parent="#sidebar">
+                        <li class="sidebar-item <%- (childSidebarActive == 'All')? 'active': '' %>"><a class="sidebar-link" href="/admin/users/filter/all">All Users</a></li>
+                        <li class="sidebar-item <%- (childSidebarActive == 'Admin')? 'active': '' %>"><a class="sidebar-link" href="/admin/users/filter/admin">Admin</a></li>
+                        <li class="sidebar-item <%- (childSidebarActive == 'Customer')? 'active': '' %>"><a class="sidebar-link" href="/admin/users/filter/guest">Guests</a></li>
+                        <li class="sidebar-item <%- (childSidebarActive == 'Host')? 'active': '' %>"><a class="sidebar-link" href="/admin/users/filter/host">Hosts</a></li>
+                    </ul>
+                </li>
+                <li class="sidebar-item <%- (sidebarActive == 'Venues')? 'active': '' %>">
+                    <a data-bs-target="#venus" data-bs-toggle="collapse" class="sidebar-link <%- (sidebarActive == 'Venues')? '': 'collapsed' %>">
+                        <i class="align-middle" data-feather="home"></i> <span class="align-middle">Venues</span>
+                    </a>
+                    <ul id="venus" class="sidebar-dropdown list-unstyled collapse <%- (sidebarActive == 'Venues')? 'show': '' %>" data-bs-parent="#sidebar">
+                        <li class="sidebar-item <%- (childSidebarActive == 'All Venue')? 'active': '' %>"><a class="sidebar-link" href="/admin/venues/filter/all">All Venues</a></li>
+                        <li class="sidebar-item <%- (childSidebarActive == 'Pending Venue')? 'active': '' %>"><a class="sidebar-link" href="/admin/venues/filter/pending">Pending</a></li>
+                        <li class="sidebar-item <%- (childSidebarActive == 'Active Venue')? 'active': '' %>"><a class="sidebar-link" href="/admin/venues/filter/active">Active</a></li>
+                    </ul>
+                </li>
+                <!--<li class="sidebar-item <%- (sidebarActive == 'Chats')? 'active': '' %>">
+                    <a class="sidebar-link" href="/admin/chats">
+                        <i class="align-middle" data-feather="message-circle"></i> <span class="align-middle">My Inbox</span>
+                    </a>
+                </li>-->
+            </ul>
+        </div>
+    </nav>
+    <!--**********************************
+        Sidebar end
+    ***********************************-->

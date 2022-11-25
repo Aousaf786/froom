@@ -1,0 +1,92 @@
+<%- include('../partials/head')  %>
+
+</head>
+
+    <%- include('../partials/header') %>
+
+    <!--**********************************
+    Inner Content body start
+    ***********************************-->
+
+    <h1 class="h3 mb-3"><%- sectionTitle %> Venue Listing</h1>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title float-start"><%- sectionTitle %> Venues</h5>
+                </div>
+                <div class="card-body overflow-auto">
+                    <table id="datatable" class="table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Sr</th>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i < records.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= i+1 %>
+                                    </td>
+                                    <td>
+                                        <%= records[i]._id %>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/users/edit-user/<%= records[i].user_id._id %>" target="_blank"><%= records[i].user_id.first_name %> <%= records[i].user_id.last_name %></a>
+                                    </td>
+                                    <td>
+                                        <%= records[i].title %>
+                                    </td>
+                                    <td>
+                                        <%= records[i].type_of_event_room %>
+                                    </td>
+                                    <td>
+                                        <%= records[i].price %>
+                                    </td>
+                                    <td>
+                                        <%- (records[i].status == 1)? '<span class="badge bg-success">Active</span>': '<span class="badge bg-warning">Inactive</span>' %>
+                                    </td>
+                                    <td>
+                                        <%= moment(records[i].createdAt).format(DATE_FORMAT) %>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/venues/edit-venue/<%= records[i]._id %>" class="btn btn-primary">Edit</a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+    Inner Content body end
+    ***********************************-->
+
+    <%- include('../partials/footer') %>
+
+    <!-- Scripts -->
+    <%- include('../partials/defaultJs') %>
+    <!-- Datatable -->
+    <script src="/admin-assets/js/datatables.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#datatable').DataTable();
+
+        });
+    </script>
+
+</body>
+</html>
